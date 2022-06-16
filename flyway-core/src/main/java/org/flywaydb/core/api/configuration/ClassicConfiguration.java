@@ -379,6 +379,10 @@ public class ClassicConfiguration implements Configuration {
     private String oracleKerberosCacheFile = "";
     private String oracleWalletLocation;
     /**
+     * The database name for DB2 on z/OS (required for DB2 on z/OS)
+     */
+    private String db2zDatabaseName = "";
+    /**
      * -- SETTER --
      * Whether to fail if a location specified in the flyway.locations option doesn't exist
      *
@@ -442,10 +446,8 @@ public class ClassicConfiguration implements Configuration {
 
         throw new org.flywaydb.core.internal.license.FlywayTeamsUpgradeRequiredException("dryRunOutput");
 
-
-
-
     }
+
 
     /**
      * Sets the file where to output the SQL statements of a migration dry run. {@code null} to execute the SQL statements
@@ -458,49 +460,6 @@ public class ClassicConfiguration implements Configuration {
     public void setDryRunOutputAsFile(File dryRunOutput) {
 
         throw new org.flywaydb.core.internal.license.FlywayTeamsUpgradeRequiredException("dryRunOutput");
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
     }
 
     /**
@@ -516,15 +475,6 @@ public class ClassicConfiguration implements Configuration {
     public void setDryRunOutputAsFileName(String dryRunOutputFileName) {
 
         throw new org.flywaydb.core.internal.license.FlywayTeamsUpgradeRequiredException("dryRunOutput");
-
-
-
-
-
-
-
-
-
 
     }
 
@@ -559,10 +509,6 @@ public class ClassicConfiguration implements Configuration {
     public void setErrorOverrides(String... errorOverrides) {
 
         throw new org.flywaydb.core.internal.license.FlywayTeamsUpgradeRequiredException("errorOverrides");
-
-
-
-
     }
 
     /**
@@ -1209,6 +1155,13 @@ public class ClassicConfiguration implements Configuration {
 
 
     }
+    /**
+     * The database name for DB2 on z/OS (required for DB2 on z/OS)
+     */
+    public void setDb2zDatabaseName(String db2zDatabaseName) {
+
+        this.db2zDatabaseName = db2zDatabaseName;
+    }
 
     /**
      * Whether Flyway should attempt to create the schemas specified in the schemas property.
@@ -1337,6 +1290,7 @@ public class ClassicConfiguration implements Configuration {
         setShouldCreateSchemas(configuration.isCreateSchemas());
         setLockRetryCount(configuration.getLockRetryCount());
         setFailOnMissingLocations(configuration.isFailOnMissingLocations());
+        setDb2zDatabaseName(configuration.getDb2zDatabaseName());
 
         url = configuration.getUrl();
         user = configuration.getUser();
@@ -1606,6 +1560,10 @@ public class ClassicConfiguration implements Configuration {
         Boolean oracleSqlplusWarnProp = removeBoolean(props, ConfigUtils.ORACLE_SQLPLUS_WARN);
         if (oracleSqlplusWarnProp != null) {
             setOracleSqlplusWarn(oracleSqlplusWarnProp);
+        }
+        String db2zDatabaseNameProp = props.remove(ConfigUtils.DB2Z_DATABASE_NAME);
+        if (db2zDatabaseNameProp != null) {
+            setDb2zDatabaseName(db2zDatabaseNameProp);
         }
         Boolean createSchemasProp = removeBoolean(props, ConfigUtils.CREATE_SCHEMAS);
         if (createSchemasProp != null) {
